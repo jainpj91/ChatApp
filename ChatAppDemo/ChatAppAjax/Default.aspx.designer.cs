@@ -31,6 +31,15 @@ namespace ChatAppAjax {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// ScriptManager1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        
+        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -67,13 +76,13 @@ namespace ChatAppAjax {
         protected global::System.Web.UI.WebControls.TextBox txtPass;
         
         /// <summary>
-        /// butSubmit control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button butSubmit;
+        protected global::System.Web.UI.WebControls.Button Button1;
         
         /// <summary>
         /// butNewUser control.
@@ -92,6 +101,24 @@ namespace ChatAppAjax {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblLoginError;
+        
+        /// <summary>
+        /// hdnChatUsrId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnChatUsrId;
+        
+        /// <summary>
+        /// hdnChatUsrName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnChatUsrName;
         
         /// <summary>
         /// panelNewUser control.

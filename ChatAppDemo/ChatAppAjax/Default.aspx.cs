@@ -26,13 +26,13 @@ namespace ChatAppAjax
 
         protected void butSubmit_Click(object sender, EventArgs e)
         {
-            ChatAppDemoEntities db = new ChatAppDemoEntities();
+            var db = new ChatAppDemoEntities();
             var users = from u in db.UserInfoes
-                         where u.Username == txtUserName.Text
-                         && u.Password == txtPass.Text
-                         select u;
+                        where u.Username == txtUserName.Text
+                        && u.Password == txtPass.Text
+                        select u;
 
-            if (users.Count() > 0)
+            if (users.Any())
             {
                 Session["ChatUserID"] = users.First().UserId;
                 Session["ChatUsername"] = users.First().Username;
@@ -54,5 +54,6 @@ namespace ChatAppAjax
         {
             panelNewUser.Visible = true;
         }
+
     }
 }

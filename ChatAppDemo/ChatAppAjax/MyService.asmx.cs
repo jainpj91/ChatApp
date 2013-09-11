@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Services;
 using System.Web.Script.Serialization;
 using System.Configuration;
@@ -179,7 +180,7 @@ namespace ChatAppAjax
         }
 
         [WebMethod]
-        public string InsertNewUser(string uid, string fname, string lname, string uname, string pass, string sex)
+        public bool InsertNewUser(string uid, string fname, string lname, string uname, string pass, string sex)
         {
             try
             {
@@ -188,24 +189,19 @@ namespace ChatAppAjax
                 userInfo.UserId = uid;
                 userInfo.Firstname = fname;
                 userInfo.Lastname = lname;
+                userInfo.Username = uname;
                 userInfo.Password = pass;
                 userInfo.Sex = sex;
 
                 dbChatAppDemoEntities.AddToUserInfoes(userInfo);
                 dbChatAppDemoEntities.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-            JavaScriptSerializer js = new JavaScriptSerializer();// Use this when formatting the data as JSON
-            return js.Serialize("hi");
-        }
-
-        [WebMethod]
-        public string CheckFarji(bool uid)
-        {
-            return "Prabhat Jain";
+            return false;
         }
     }
 }

@@ -2,3 +2,7 @@ C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppAja
 C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppAjax\bin\ChatAppAjax.pdb
 C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppAjax\obj\Debug\ChatAppAjax.dll
 C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppAjax\obj\Debug\ChatAppAjax.pdb
+C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\bin\ChatAppAjax.dll
+C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\bin\ChatAppAjax.pdb
+C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\obj\Debug\ChatAppAjax.dll
+C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\obj\Debug\ChatAppAjax.pdb

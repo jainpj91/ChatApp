@@ -17,26 +17,17 @@
     </style>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript">
-
-        function CallFarji() {
-            var dd = true;
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                data: '{uid:"' + dd + '"}',
-                dataType: "json",
-                url: "http://localhost:51048/MyService.asmx/CheckFarji",
-                success: function(data, status) {
-                    alert(data.d);
-                },
-                error: function(err) {
-                    alert('faliure');
-                    alert(err);
-                }
-            });
+        
+        function Reset() {
+            document.getElementById('txtLoginUI').value = '';
+            document.getElementById('txtLoginFN').value = '';
+            document.getElementById('txtLoginLN').value = '';
+            document.getElementById('txtLoginUN').value = '';
+            document.getElementById('txtLoginPW').value = '';
+            document.getElementById('dropdwnLoginSEX').selectedIndex = 0;
         }
         
-        function LoginUser() {
+        function NewUser() {
 
             if (ValidateUser()) {
                 $.ajax({
@@ -46,23 +37,31 @@
                     dataType: "json",
                     url: "http://localhost:51048/MyService.asmx/InsertNewUser",
                     success: function (data, status) {
+                        if (data.d == true) {
+                            alert('Inserted');
+                            Reset();
+                        } else {
+                            alert('Some error occurred');
+                        }
+                        $('#<%= panelNewUser.ClientID %>').hide('slow');
                     },
                     error: function (err) {
                         alert('faliure');
-                        alert(err);
                     }
                 });
             }
         }
-
+        
         function ValidateUser() {
             return true;
         }
     </script>
 </head>
 <body>
+    
     <form id="form1" runat="server">
     <div style="height: 584px">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="True" LoadScriptsBeforeUI="True" ScriptMode="Release" />
         <br />
         <br />
         <table class="style1" width="50%" style="background-color: #CCFF99">
@@ -89,24 +88,19 @@
             </tr>
             <tr>
                 <td>
-                    <asp:Button ID="butSubmit" runat="server" OnClick="butSubmit_Click" Text="Submit" />
+                    <asp:Button ID="Button1" runat="server" onclick="butSubmit_Click" Text="Button" />
                 </td>
                 <td>
                     <asp:Button ID="butNewUser" runat="server" OnClick="butNewUser_Click" Text="New User" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="button" value="Check" onclick="javascript:CallFarji();" />
-                </td>
-                <td>
-                    &nbsp;
                 </td>
             </tr>
         </table>
         <br />
         <asp:Label ID="lblLoginError" runat="server" Text="Sorry, Username or password is wrong."
             Visible="False"></asp:Label>
+        &nbsp;&nbsp;&nbsp;
+        <asp:HiddenField runat="server" ID="hdnChatUsrId"/><asp:HiddenField runat="server" ID="hdnChatUsrName"/>
+        
         <asp:Panel ID="panelNewUser" runat="server" Height="299px" Style="margin-top: 68px"
             Visible="False" Width="504px" BackColor="#CCFF99">
             <br />
@@ -137,7 +131,7 @@
             </asp:DropDownList>
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" id="butSaveNewUser" value="Save" onclick="javascript:LoginUser();" />
+            <input type="button" id="butSaveNewUser" value="Save" onclick="javascript:NewUser();" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </asp:Panel>
     </div>

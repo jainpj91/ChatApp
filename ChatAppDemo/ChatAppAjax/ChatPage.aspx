@@ -15,6 +15,7 @@
 
         $(function () {
             var chatUsrId = '<%= Session["ChatUserID"] %>';
+            alert(chatUsrId);
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -76,7 +77,7 @@
                 dataType: "json",
                 url: "http://localhost:51048/MyService.asmx/GetLoggenInUser",
                 success: function (data, status) {
-                    SetLoggedInListData(data.d)
+                    SetLoggedInListData(data.d);
                 },
                 error: function (err) {
                     alert('Failure GetLoggenInUser' + err.d);
