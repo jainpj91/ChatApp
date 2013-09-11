@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ChatAppDemoModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+  <EntityContainer Name="ChatAppDemoModelStoreContainer">
+    <EntitySet Name="LoggedInUseId" EntityType="ChatAppDemoModel.Store.LoggedInUseId" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Message" EntityType="ChatAppDemoModel.Store.Message" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Room" EntityType="ChatAppDemoModel.Store.Room" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserInfo" EntityType="ChatAppDemoModel.Store.UserInfo" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="LoggedInUseId">
+    <Key>
+      <PropertyRef Name="LoggedInUserId" />
+    </Key>
+    <Property Name="LoggedInUserId" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="UserId" Type="varchar" MaxLength="50" />
+    <Property Name="RoomId" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="MessageId" />
+    </Key>
+    <Property Name="MessageId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoomId" Type="varchar" MaxLength="50" />
+    <Property Name="UserId" Type="varchar" MaxLength="50" />
+    <Property Name="ToUserId" Type="varchar" MaxLength="50" />
+    <Property Name="Text" Type="varchar" MaxLength="50" />
+    <Property Name="TimeEntered" Type="datetime" />
+    <Property Name="Color" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="RoomId" />
+    </Key>
+    <Property Name="RoomId" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Firstname" Type="varchar" MaxLength="50" />
+    <Property Name="Lastname" Type="varchar" MaxLength="50" />
+    <Property Name="Username" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+    <Property Name="Sex" Type="varchar" MaxLength="50" />
+  </EntityType>
+</Schema>

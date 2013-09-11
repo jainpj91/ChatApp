@@ -1,0 +1,5 @@
+C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppDemo\bin\ChatAppDemo.dll
+C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppDemo\bin\ChatAppDemo.pdb
+C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppDemo\obj\Debug\ChatAppDemo.dll
+C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppDemo\obj\Debug\ChatAppDemo.pdb
+C:\Users\mindfire11\Documents\Visual Studio 2010\Projects\ChatAppDemo\ChatAppDemo\obj\Debug\ChatAppDemo.csprojResolveAssemblyReference.cache
