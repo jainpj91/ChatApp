@@ -14,9 +14,20 @@
             text-decoration: underline;
             height: 47px;
         }
+       
     </style>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript">
+        var popupWindow = null;
+
+        function child_open() {
+            popupWindow = window.open("ChatRoom.aspx", "_blank", "directories=no, status=no, menubar=no, scrollbars=yes, resizable=no,width=600, height=280,top=200,left=200");
+        }
+        
+        function parent_disable() {
+            if (popupWindow && !popupWindow.closed)
+                popupWindow.focus();
+        }
         
         function Reset() {
             document.getElementById('txtLoginUI').value = '';
@@ -26,7 +37,7 @@
             document.getElementById('txtLoginPW').value = '';
             document.getElementById('dropdwnLoginSEX').selectedIndex = 0;
         }
-        
+
         function NewUser() {
 
             if (ValidateUser()) {
@@ -51,17 +62,17 @@
                 });
             }
         }
-        
+
         function ValidateUser() {
             return true;
         }
     </script>
 </head>
-<body>
-    
+<body onFocus="parent_disable();" onclick="parent_disable();">
     <form id="form1" runat="server">
     <div style="height: 584px">
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="True" LoadScriptsBeforeUI="True" ScriptMode="Release" />
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="True" LoadScriptsBeforeUI="True"
+            ScriptMode="Release" />
         <br />
         <br />
         <table class="style1" width="50%" style="background-color: #CCFF99">
@@ -88,10 +99,12 @@
             </tr>
             <tr>
                 <td>
-                    <asp:Button ID="Button1" runat="server" onclick="butSubmit_Click" Text="Button" />
+                    <asp:Button ID="Button1" runat="server" OnClick="butSubmit_Click" Text="Button" />
                 </td>
                 <td>
                     <asp:Button ID="butNewUser" runat="server" OnClick="butNewUser_Click" Text="New User" />
+                    &nbsp;
+                    <input type="button" onclick="javascript:child_open()">
                 </td>
             </tr>
         </table>
@@ -99,8 +112,8 @@
         <asp:Label ID="lblLoginError" runat="server" Text="Sorry, Username or password is wrong."
             Visible="False"></asp:Label>
         &nbsp;&nbsp;&nbsp;
-        <asp:HiddenField runat="server" ID="hdnChatUsrId"/><asp:HiddenField runat="server" ID="hdnChatUsrName"/>
-        
+        <asp:HiddenField runat="server" ID="hdnChatUsrId" />
+        <asp:HiddenField runat="server" ID="hdnChatUsrName" />
         <asp:Panel ID="panelNewUser" runat="server" Height="299px" Style="margin-top: 68px"
             Visible="False" Width="504px" BackColor="#CCFF99">
             <br />

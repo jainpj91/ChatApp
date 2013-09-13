@@ -6,3 +6,4 @@ C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\bin\ChatApp
 C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\bin\ChatAppAjax.pdb
 C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\obj\Debug\ChatAppAjax.dll
 C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\obj\Debug\ChatAppAjax.pdb
+C:\Users\mindfire11\Documents\GitHub\ChatApp\ChatAppDemo\ChatAppAjax\obj\Debug\ChatAppAjax.csprojResolveAssemblyReference.cache

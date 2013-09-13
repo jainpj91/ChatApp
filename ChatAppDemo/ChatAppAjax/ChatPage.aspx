@@ -6,6 +6,7 @@
     <title></title>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript">
+
         var chatUsrId = '<%= Session["ChatUserID"] %>';
 
         function SetScrollPosition() {
@@ -22,10 +23,10 @@
                 data: '{text:' + null + ', roomId:"' + document.getElementById("lblRoomID").value + '",chatUsrId:"' + chatUsrId + '"}',
                 dataType: "json",
                 url: "http://localhost:51048/MyService.asmx/InsertMess",
-                success: function (data, status) {
+                success: function () {
                 },
                 error: function (err) {
-                    alert('faliure');
+                    var alert = alert('faliure');
                     alert(err);
                 }
             });
@@ -63,8 +64,10 @@
                 dataType: "json",
                 url: "http://localhost:51048/MyService.asmx/GetMess",
                 success: function (data, status) {
-                    PrepareDate();
-                    SetListData(data.d);
+                    if (data.d != null) {
+                        PrepareDate();
+                        SetListData(data.d);
+                    }
                 },
                 error: function (err) {
                     alert('faliure');
@@ -76,22 +79,23 @@
                 data: '{roomId:"' + document.getElementById("lblRoomID").value + '",chatUsrId:"' + chatUsrId + '"}',
                 dataType: "json",
                 url: "http://localhost:51048/MyService.asmx/GetLoggenInUser",
-                success: function (data, status) {
+                success: function (data) {
                     SetLoggedInListData(data.d);
                 },
                 error: function (err) {
                     alert('Failure GetLoggenInUser' + err.d);
                 }
             });
-        }, 1000);
+        }, 20000);
 
         function SetLoggedInListData(data) {
 
-            if (data != null || typeof (data) != 'undefined' || data != '') {
-
+            if (data != null || typeof (data) != 'undefined') {
+                data = JSON.parse(data);
                 var litU = document.getElementById("litUsers");
                 var present = false;
-                for (var count = 0; count < data.length; count++) {
+
+                for (var count = 0; count < data.length; ) {
 
                     for (var i = 0; i < litU.options.length; ++i) {
                         if (litU.options[i].value == data[count]) {
@@ -102,9 +106,10 @@
                     if (!present) {
                         var oOption = document.createElement("OPTION");
                         litU.options.add(oOption);
-                        oOption.text = data[count];
                         oOption.value = data[count];
+                        oOption.text = data[count + 1];
                     }
+                    count += 2;
                 }
             }
         }
@@ -159,7 +164,6 @@
                 dataType: "json",
                 url: "http://localhost:51048/MyService.asmx/InsertMess",
                 success: function (data, status) {
-                    alert(data.d);
                 },
                 error: function (err) {
                     alert('faliure');
@@ -169,7 +173,7 @@
         }
 
         function LogoutUser() {
-            
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -177,8 +181,7 @@
                 dataType: "json",
                 url: "http://localhost:51048/MyService.asmx/LogoutUser",
                 success: function (data, status) {
-                <%Session["ChatUserID"] = null;%>
-                <%Session["ChatUsername"] = null;%>
+
                     alert('You have been successfully logged out!!');
                     window.location = "http://localhost:51048/Default.aspx?val=logout";
                 },
@@ -188,32 +191,68 @@
             });
         }
     </script>
+    <style type="text/css">
+        .style1
+        {
+            width: 60%;
+        }
+        .style3
+        {
+            width: 140px;
+        }
+    </style>
 </head>
 <body style="background-color: gainsboro;" onload="SetScrollPosition()" onunload="LogoutUser()">
-    <form id="form1" defaultbutton="Btn_Send" defaultfocus="txtMessage" runat="server">
+    <form id="form1" defaultfocus="txtMessage" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
         EnablePageMethods="true">
     </asp:ScriptManager>
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
-        <ContentTemplate>
-            <asp:ListBox ID="litMessages" runat="server" Style="height: 300px; width: 474px;
-                float: left" AutoPostBack="false"></asp:ListBox>
-            <asp:ListBox ID="litUsers" runat="server" Style="height: 300px; width: 100px; float: right">
-            </asp:ListBox>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-    <asp:TextBox ID="txtMessage" runat="server" Width="331px">
-    </asp:TextBox>
-    <asp:Button ID="Btn_Send" runat="server" Text="Send" OnClick="Btn_Send_Click" />
-    <asp:Label ID="Label1" runat="server" Text="Color: "></asp:Label>
-    <asp:DropDownList ID="ddlColor" runat="server">
-    </asp:DropDownList>
-    <asp:Button ID="butLogout" runat="server" Text="Logout" OnClick="butLogout_Click" />
-    <asp:TextBox ID="lblRoomID" runat="server"></asp:TextBox>
-    <input type="button" value="Click Me" onclick="javascript:CallAjax();" />
-    <input type="button" value="Log Me Out" onclick="javascript:LogoutUser();" />
+    <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <table class="style1">
+        <tr>
+            <td class="style2" colspan="2">
+                You are in the Room :&nbsp;&nbsp;&nbsp;<asp:TextBox ID="lblRoomID" runat="server"></asp:TextBox>
+            </td>
+            <td>
+                <input type="button" value="Log Me Out" onclick="javascript:LogoutUser();" />
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
+                    <ContentTemplate>
+                        <asp:ListBox ID="litMessages" runat="server" Style="height: 300px; width: 474px;
+                            float: left" AutoPostBack="false"></asp:ListBox>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </td>
+            <td class="style3">
+                &nbsp;
+            </td>
+            <td>
+                <asp:ListBox ID="litUsers" runat="server" Style="height: 300px; width: 100px; float: right">
+                </asp:ListBox>
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                <asp:TextBox ID="txtMessage" runat="server" Width="331px">
+                </asp:TextBox>
+                <input type="button" id="btnSendMess" value="Send Message" onclick="javascript:CallAjax();" />
+            </td>
+            <td class="style3">
+                <asp:Label ID="Label1" runat="server" Text="Color: "></asp:Label>
+                <asp:DropDownList ID="ddlColor" runat="server">
+                </asp:DropDownList>
+            </td>
+            <td>
+                &nbsp;
+                <img src="Images/sendbutton.jpg" height="88px" width="138px" onclick="javascript:CallAjax();"
+                    alt="" />
+            </td>
+        </tr>
+    </table>
     </form>
-    <div id="testdiv">
-    </div>
 </body>
 </html>

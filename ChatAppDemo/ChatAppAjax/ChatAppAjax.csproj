@@ -52,7 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChatPage.aspx" />
+    <Content Include="ChatRoom.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="Images\sendbutton.jpg" />
     <Content Include="MyService.asmx" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
@@ -72,6 +74,13 @@
     </Compile>
     <Compile Include="ChatPage.aspx.designer.cs">
       <DependentUpon>ChatPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRoom.aspx.cs">
+      <DependentUpon>ChatRoom.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChatRoom.aspx.designer.cs">
+      <DependentUpon>ChatRoom.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

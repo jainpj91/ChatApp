@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Web;
-using System.Web.Configuration;
 using System.Web.Services;
 using System.Web.Script.Serialization;
 using System.Configuration;
-using System.Text;
 
 namespace ChatAppAjax
 {
@@ -18,37 +15,35 @@ namespace ChatAppAjax
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     [System.Web.Script.Services.ScriptService]
-    public class MyService : System.Web.Services.WebService
+    public class MyService : WebService
     {
         [WebMethod]
         public string HelloWorld()
         {
-            string[] val = new string[2];
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            var val = new string[2];
+            var js = new JavaScriptSerializer();
             return js.Serialize(val);
         }
 
         [WebMethod]
         public string Hi()
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            var js = new JavaScriptSerializer();
             return js.Serialize("hi");
         }
 
         [WebMethod]
-        public string InsertMess(string text, string roomId, string chatUsrId)
+        public void InsertMess(string text, string roomId, string chatUsrId)
         {
             try
             {
-                ChatAppDemoEntities dbChatAppDemoEntities = new ChatAppDemoEntities();
+                var dbChatAppDemoEntities = new ChatAppDemoEntities();
 
-                Message message = new Message();
-                message.RoomId = roomId;
-                message.UserId = chatUsrId;
+                var message = new Message { RoomId = roomId, UserId = chatUsrId };
 
                 if (text == null || text == "null")
                 {
-                    message.Text = ConfigurationManager.AppSettings["ChatLoggedInText"] + "" + DateTime.Now.ToString();
+                    message.Text = ConfigurationManager.AppSettings["ChatLoggedInText"] + "" + DateTime.Now;
                 }
                 else
                 {
@@ -65,8 +60,6 @@ namespace ChatAppAjax
             {
                 Console.WriteLine(ex);
             }
-            JavaScriptSerializer js = new JavaScriptSerializer();// Use this when formatting the data as JSON
-            return js.Serialize("hi");
         }
 
         [WebMethod]
@@ -75,8 +68,8 @@ namespace ChatAppAjax
             try
             {
                 DateTime dt = Convert.ToDateTime(dtCheck);
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                ChatAppDemoEntities dbChatAppDemoEntities = new ChatAppDemoEntities();
+                var js = new JavaScriptSerializer();
+                var dbChatAppDemoEntities = new ChatAppDemoEntities();
 
                 var mess = (from message in dbChatAppDemoEntities.Messages
                             where message.RoomId == roomId
@@ -86,21 +79,22 @@ namespace ChatAppAjax
 
                 if (mess.Count() != 0)
                 {
-                    string[,] arrMess = new string[mess.Count(), 2];
+                    var arrMess = new string[mess.Count(), 2];
                     var row = 0;
 
                     foreach (var message in mess)
                     {
                         Console.WriteLine(message.TimeEntered);
-                        arrMess[row, 0] = message.UserId;
+                        Message message1 = message;
+                        var usr = (from usrInfo in dbChatAppDemoEntities.UserInfoes
+                                   where usrInfo.UserId == message1.UserId
+                                   select usrInfo.Username);
+
+                        arrMess[row, 0] = usr.First();
                         arrMess[row, 1] = message.Text;
                         row++;
                     }
                     return js.Serialize(arrMess);
-                }
-                else
-                {
-                    return null;
                 }
             }
             catch (Exception ex)
@@ -111,42 +105,49 @@ namespace ChatAppAjax
         }
 
         [WebMethod]
-        public string[] GetLoggenInUser(string roomId, string chatUsrId)
+        public string GetLoggenInUser(string roomId, string chatUsrId)
         {
             try
             {
-                ChatAppDemoEntities dbChatAppDemoEntities = new ChatAppDemoEntities();
-                
+                var js = new JavaScriptSerializer();
+                var dbChatAppDemoEntities = new ChatAppDemoEntities();
+
                 var user = from u in dbChatAppDemoEntities.LoggedInUseIds
-                            where u.UserId == chatUsrId
-                            && u.RoomId == roomId
-                            select u;
+                           where u.UserId == chatUsrId
+                           && u.RoomId == roomId
+                           select u;
 
-                if (user.Count() == 0)
+                if (!user.Any())
                 {
-                    LoggedInUseId LoggedInUseIds = new LoggedInUseId();
-                    LoggedInUseIds.UserId = chatUsrId;
-                    LoggedInUseIds.RoomId = roomId;
-                    LoggedInUseIds.LoggedInUserId = chatUsrId;
+                    var loggedInUseIds = new LoggedInUseId
+                    {
+                        UserId = chatUsrId,
+                        RoomId = roomId,
+                        LoggedInUserId = chatUsrId
+                    };
 
-                    dbChatAppDemoEntities.AddToLoggedInUseIds(LoggedInUseIds);
+                    dbChatAppDemoEntities.AddToLoggedInUseIds(loggedInUseIds);
                     dbChatAppDemoEntities.SaveChanges();
                 }
+                
+                var loggedInUsers = dbChatAppDemoEntities.LoggedInUseIds.Where(logInUser => logInUser.RoomId == roomId);
 
-                StringBuilder sb = new StringBuilder();
-
-                var loggedInUsers = from logInUser in dbChatAppDemoEntities.LoggedInUseIds
-                                    where logInUser.RoomId == roomId
-                                    select logInUser;
-
-                string[] arrSendLogInUID = new string[loggedInUsers.Count()];
+                var arrSendLogInUid = new string[loggedInUsers.Count(), 2];
                 var i = 0;
+
                 foreach (var loggedInUser in loggedInUsers)
                 {
-                    arrSendLogInUID[i] = loggedInUser.UserId;
+                    arrSendLogInUid[i, 0] = loggedInUser.UserId;
+                    var sdf = loggedInUser.UserId;
+
+                    var usr = (dbChatAppDemoEntities.UserInfoes.Where(usrInfo => usrInfo.UserId == sdf)
+                        .Select(usrInfo => usrInfo.Username));
+
+                    arrSendLogInUid[i, 1] = usr.First();
+
                     i++;
                 }
-                return arrSendLogInUID;
+                return js.Serialize(arrSendLogInUid);
             }
             catch (Exception ex)
             {
@@ -160,18 +161,16 @@ namespace ChatAppAjax
         {
             try
             {
-                ChatAppDemoEntities dbChatAppDemoEntities = new ChatAppDemoEntities();
-                string chatUserID = chatUsrId;
+                var dbChatAppDemoEntities = new ChatAppDemoEntities();
+                string chatUserId = chatUsrId;
 
-                var loggedInUser = (from lIU in dbChatAppDemoEntities.LoggedInUseIds
-                                    where lIU.UserId == chatUserID
-                                    && lIU.RoomId == roomId
-                                    select lIU).First();
+                var loggedInUser = (dbChatAppDemoEntities.LoggedInUseIds.Where(lIu => lIu.UserId == chatUserId
+                                                                                      && lIu.RoomId == roomId)).First();
 
                 dbChatAppDemoEntities.DeleteObject(loggedInUser);
                 dbChatAppDemoEntities.SaveChanges();
 
-                this.InsertMess("Just Logged Out! " + DateTime.Now.ToString(), roomId, chatUsrId);
+                InsertMess("Just Logged Out! " + DateTime.Now.ToString(CultureInfo.InvariantCulture), roomId, chatUsrId);
             }
             catch (Exception ex)
             {
@@ -184,14 +183,16 @@ namespace ChatAppAjax
         {
             try
             {
-                ChatAppDemoEntities dbChatAppDemoEntities = new ChatAppDemoEntities();
-                UserInfo userInfo = new UserInfo();
-                userInfo.UserId = uid;
-                userInfo.Firstname = fname;
-                userInfo.Lastname = lname;
-                userInfo.Username = uname;
-                userInfo.Password = pass;
-                userInfo.Sex = sex;
+                var dbChatAppDemoEntities = new ChatAppDemoEntities();
+                var userInfo = new UserInfo
+                {
+                    UserId = uid,
+                    Firstname = fname,
+                    Lastname = lname,
+                    Username = uname,
+                    Password = pass,
+                    Sex = sex
+                };
 
                 dbChatAppDemoEntities.AddToUserInfoes(userInfo);
                 dbChatAppDemoEntities.SaveChanges();

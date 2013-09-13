@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data.SqlClient;
 
 namespace ChatAppAjax
 {
@@ -27,16 +22,15 @@ namespace ChatAppAjax
         protected void butSubmit_Click(object sender, EventArgs e)
         {
             var db = new ChatAppDemoEntities();
-            var users = from u in db.UserInfoes
-                        where u.Username == txtUserName.Text
-                        && u.Password == txtPass.Text
-                        select u;
+            var users = db.UserInfoes.Where(u => u.Username == txtUserName.Text
+                                                 && u.Password == txtPass.Text);
 
             if (users.Any())
             {
                 Session["ChatUserID"] = users.First().UserId;
                 Session["ChatUsername"] = users.First().Username;
                 Session["LoggedIn"] = false;
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "my", "child_open();", true);
                 Login1_LoggedIn();
             }
             else
@@ -44,10 +38,12 @@ namespace ChatAppAjax
                 lblLoginError.Visible = true;
             }
         }
-
+        
         protected void Login1_LoggedIn()
         {
-            Response.Redirect("ChatPage.aspx?roomId=1");
+            
+
+            //Response.Redirect("ChatPage.aspx?roomId=1");
         }
 
         protected void butNewUser_Click(object sender, EventArgs e)
